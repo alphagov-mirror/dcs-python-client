@@ -1,3 +1,0 @@
-jwcrypto
-requests
-docopt

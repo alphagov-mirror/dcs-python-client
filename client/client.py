@@ -2,7 +2,7 @@
 """
 Make a test passport request to the Document Checking Service (DCS)
 
-Usage: client.py [--url <url>] --client-signing-certificate <PATH> --client-signing-key <PATH> --server-encryption-certificate <PATH> --client-encryption-key <PATH> --server-signing-certificate <PATH> [--client-ssl-certificate <PATH> --client-ssl-key <PATH> --server-ssl-ca-bundle <PATH>]
+Usage: dcs-client [--url <url>] --client-signing-certificate <PATH> --client-signing-key <PATH> --server-encryption-certificate <PATH> --client-encryption-key <PATH> --server-signing-certificate <PATH> [--client-ssl-certificate <PATH> --client-ssl-key <PATH> --server-ssl-ca-bundle <PATH>]
 
 Options:
     -h --help                               Show this screen.
@@ -158,7 +158,7 @@ def unwrap_response(body_data, arguments):
     return json_decode(unwrap_signature(inner_signed, server_signing_certificate))
 
 
-if __name__ == "__main__":
+def main():
     arguments = docopt(__doc__)
 
     request_payload_unwrapped = create_valid_passport_request_payload()
@@ -188,4 +188,4 @@ if __name__ == "__main__":
     r.raise_for_status()
 
     response_payload_unwrapped = unwrap_response(r.content.decode("utf-8"), arguments)
-    print(f"Response: {response_payload_unwrapped}")
+    print(f"\n\nResponse: {response_payload_unwrapped}")
