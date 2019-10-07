@@ -1,7 +1,5 @@
 # DCS python client
 
-(c) Crown copyright; not open source
-
 A client to check passport validity using the [Document Checking Service (DCS) API](https://dcs-pilot-docs.cloudapps.digital/message-flow/#message-flow).
 
 This client is currently missing:
