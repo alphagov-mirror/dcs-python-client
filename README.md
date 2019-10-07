@@ -8,7 +8,7 @@ This client is currently missing:
 - [ ] error handling
 - [ ] the ability to handle non-error responses; such responses are simply printed to stdout
 - [ ] tests - both unit and integration
-- [ ] a stub DCS to give non-government users something to run this client again
+- [ ] a stub DCS to give non-government users something to run this client against
 - [ ] the ability to send in custom passport data
 - [ ] publication to pypi.org
 
