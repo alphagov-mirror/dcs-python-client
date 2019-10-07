@@ -12,6 +12,8 @@ This client is currently missing:
 - [ ] the ability to send in custom passport data
 - [ ] publication to pypi.org
 
+This client does not support checking the validity of driving licences. This functionality is currently available only to identity providers for GOV.UK Verify - not to participants in [the DCS pilot](https://www.gov.uk/guidance/apply-for-the-document-checking-service-pilot-scheme).
+
 ## Installation
 
 Run `pip3 install .`
