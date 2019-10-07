@@ -1,13 +1,13 @@
 # DCS python client
 
-A client to check passport validity using the [Document Checking Service (DCS) API](https://dcs-pilot-docs.cloudapps.digital/message-flow/#message-flow).
+This is a worked example of a client for the [Document Checking Service (DCS) API](https://dcs-pilot-docs.cloudapps.digital/message-flow/#message-flow). It serves as an example of how to create a request for the DCS and how to decrypt the response.
 
-This client is currently missing:
+You should not attempt to use this as a client library, since it is currently missing:
 
 - [ ] documentation, including guidance on creating the necessary keys and certificates
+- [ ] handling responses; currently, decrypted responses are just printed to stdout
 - [ ] error handling
-- [ ] the ability to handle non-error responses; such responses are simply printed to stdout
-- [ ] tests - both unit and integration
+- [ ] tests
 - [ ] a stub DCS to give non-government users something to run this client against
 - [ ] the ability to send in custom passport data
 - [ ] publication to pypi.org
@@ -40,3 +40,12 @@ Options:
 This client is intended as an example of how to write a DCS client. It should not be used against a production DCS.
 See https://dcs-pilot-docs.cloudapps.digital/message-structure for public documentation of the DCS API.
 ```
+
+## Support and raising issues
+
+If you think you have discovered a security issue in this code please email [disclosure@digital.cabinet-office.gov.uk](mailto:disclosure@digital.cabinet-office.gov.uk) with details.
+
+For non-security related bugs and feature requests please [raise an issue](https://github.com/alphagov/dcs-python-client/issues/new) in the GitHub issue tracker.
+
+## Code of Conduct
+This project is developed under the [Alphagov Code of Conduct](https://github.com/alphagov/code-of-conduct)
