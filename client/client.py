@@ -102,15 +102,16 @@ def generate_thumbprints(path):
     with open(path, "rb") as f:
         cert = x509.load_pem_x509_certificate(f.read(), default_backend())
 
-    sha1_thumbprint = urllib.parse.quote(
+    sha1_thumbprint = (
         base64.urlsafe_b64encode(cert.fingerprint(hashes.SHA1()))
-            .decode("utf-8")
-            .strip("=")
+        .decode("utf-8")
+        .strip("=")
     )
-    sha256_thumbprint = urllib.parse.quote(
+
+    sha256_thumbprint = (
         base64.urlsafe_b64encode(cert.fingerprint(hashes.SHA256()))
-            .decode("utf-8")
-            .strip("=")
+        .decode("utf-8")
+        .strip("=")
     )
 
     return sha1_thumbprint, sha256_thumbprint
