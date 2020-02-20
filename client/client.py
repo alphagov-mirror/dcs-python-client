@@ -166,15 +166,13 @@ def main():
     print(f"Request: {request_payload_unwrapped}")
     request_payload_wrapped = wrap_request_payload(request_payload_unwrapped, arguments)
 
-    if urllib.parse.urlparse(arguments["--url"]).scheme == 'https':
+    if urllib.parse.urlparse(arguments["--url"]).scheme == "https":
         r = requests.post(
             arguments["--url"],
             data=request_payload_wrapped,
-            headers={
-                "content-type": "application/jose",
-            },
-            cert=(arguments['--client-ssl-certificate'], arguments['--client-ssl-key']),
-            verify=arguments['--server-ssl-ca-bundle'],
+            headers={"content-type": "application/jose",},
+            cert=(arguments["--client-ssl-certificate"], arguments["--client-ssl-key"]),
+            verify=arguments["--server-ssl-ca-bundle"],
         )
     else:
         r = requests.post(
