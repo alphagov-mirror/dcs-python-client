@@ -112,7 +112,7 @@ def generate_thumbprints(path):
 
     sha256_thumbprint = (
         base64.urlsafe_b64encode(
-            cert.fingerprint(hashes.SHA256)
+            cert.fingerprint(hashes.SHA256())
         )  # The thumbprint is a URL-encoded hash...
         .decode("utf-8")  # ... as a Python string ...
         .strip("=")  # ... with the padding removed.
