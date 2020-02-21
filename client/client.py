@@ -102,15 +102,20 @@ def generate_thumbprints(path):
     with open(path, "rb") as f:
         cert = x509.load_pem_x509_certificate(f.read(), default_backend())
 
-    sha1_thumbprint = urllib.parse.quote(
-        base64.urlsafe_b64encode(cert.fingerprint(hashes.SHA1()))
-            .decode("utf-8")
-            .strip("=")
+    sha1_thumbprint = (
+        base64.urlsafe_b64encode(
+            cert.fingerprint(hashes.SHA1())
+        )  # The thumbprint is a URL-encoded hash...
+        .decode("utf-8")  # ... as a Python string ...
+        .strip("=")  # ... with the padding removed.
     )
-    sha256_thumbprint = urllib.parse.quote(
-        base64.urlsafe_b64encode(cert.fingerprint(hashes.SHA256()))
-            .decode("utf-8")
-            .strip("=")
+
+    sha256_thumbprint = (
+        base64.urlsafe_b64encode(
+            cert.fingerprint(hashes.SHA256())
+        )  # The thumbprint is a URL-encoded hash...
+        .decode("utf-8")  # ... as a Python string ...
+        .strip("=")  # ... with the padding removed.
     )
 
     return sha1_thumbprint, sha256_thumbprint
@@ -165,15 +170,13 @@ def main():
     print(f"Request: {request_payload_unwrapped}")
     request_payload_wrapped = wrap_request_payload(request_payload_unwrapped, arguments)
 
-    if urllib.parse.urlparse(arguments["--url"]).scheme == 'https':
+    if urllib.parse.urlparse(arguments["--url"]).scheme == "https":
         r = requests.post(
             arguments["--url"],
             data=request_payload_wrapped,
-            headers={
-                "content-type": "application/jose",
-            },
-            cert=(arguments['--client-ssl-certificate'], arguments['--client-ssl-key']),
-            verify=arguments['--server-ssl-ca-bundle'],
+            headers={"content-type": "application/jose",},
+            cert=(arguments["--client-ssl-certificate"], arguments["--client-ssl-key"]),
+            verify=arguments["--server-ssl-ca-bundle"],
         )
     else:
         r = requests.post(
