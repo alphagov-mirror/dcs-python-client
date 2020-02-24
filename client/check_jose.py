@@ -54,11 +54,29 @@ def check_thumbprints(cert_path, user_sha1, user_sha256):
 
     if (expected_sha1, expected_sha256) != (user_sha1, user_sha256):
         print("Thumbprints don't match")
+        check_base64url(user_sha1)
+        check_base64url(user_sha256)
+        check_padding(user_sha1)
+        check_padding(user_sha256)
         print(f"  SHA1 - Expected {expected_sha1}, was {user_sha1}")
         print(f"  SHA256 - Expected {expected_sha256}, was {user_sha256}")
         sys.exit(1)
 
     print("Success - thumbprints are correct")
+
+
+def check_base64url(base64_val):
+    if "+" in base64_val or "/" in base64_val:
+        print(
+            "Thumbprint is Base64 encoded. Use Base64url encoding or url encode the Base64."
+        )
+
+
+def check_padding(base64_val):
+    if "=" in base64_val:
+        print(
+            "Thumbprint contains padding ('='). Removed padding from the Base64 encoding."
+        )
 
 
 def main():
