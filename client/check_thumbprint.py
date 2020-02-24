@@ -14,14 +14,8 @@ Options:
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
-from datetime import datetime
 from docopt import docopt
-from jwcrypto import jwk, jws, jwe
-from jwcrypto.common import json_encode, json_decode
 import base64
-import requests
-import urllib.parse
-import uuid
 import sys
 
 
@@ -58,8 +52,8 @@ def check_thumbprints(cert_path, user_sha1, user_sha256):
         check_base64url(user_sha256)
         check_padding(user_sha1)
         check_padding(user_sha256)
-        print(f"  SHA1 - Expected {expected_sha1}, was {user_sha1}")
-        print(f"  SHA256 - Expected {expected_sha256}, was {user_sha256}")
+        print(f"  SHA1 - Expected '{expected_sha1}', was '{user_sha1}'")
+        print(f"  SHA256 - Expected '{expected_sha256}', was '{user_sha256}'")
         sys.exit(1)
 
     print("Success - thumbprints are correct")
@@ -75,7 +69,7 @@ def check_base64url(base64_val):
 def check_padding(base64_val):
     if "=" in base64_val:
         print(
-            "Thumbprint contains padding ('='). Removed padding from the Base64 encoding."
+            "Thumbprint contains padding ('='). Remove padding from the Base64 encoding."
         )
 
 

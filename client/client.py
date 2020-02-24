@@ -82,9 +82,9 @@ def decrypt(message, encryption_key):
 
 def unwrap_signature(message, signing_certificate):
     """Validate and strip a signature from a response from DCS"""
-    jwstoken = jws.JWS()
-    jwstoken.deserialize(raw_jws=message, key=signing_certificate)
-    return jwstoken.payload.decode("utf-8")
+    jws_token = jws.JWS()
+    jws_token.deserialize(raw_jws=message, key=signing_certificate)
+    return jws_token.payload.decode("utf-8")
 
 
 def load_pem(path):

@@ -21,7 +21,6 @@ setuptools.setup(
     entry_points={
         'console_scripts': [
             'dcs-client=client.client:main',
-            'check-jose=client.check_jose:main'
         ],
     },
     install_requires=[
