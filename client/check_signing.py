@@ -2,13 +2,12 @@
 """
 Check you are signing correctly for the Document Checking Service (DCS)
 
-Usage: check_signing --client-signing-certificate <PATH> --client-signing-key <PATH> --jws <JWS> [--payload <PAYLOAD>]
+Usage: check_signing --client-signing-certificate <PATH> --jws <JWS> [--payload <PAYLOAD>]
 
 Options:
     -h --help                               Show this screen.
     --jws <JWS>                             The string that is output by your signing implementation
     --client-signing-certificate <PATH>     The path to the certificate you used to sign the JWS
-    --client-signing-key <PATH>             The path to the key you used to sign the JWS
     --payload                               The expected payload of the JWS object. Provide this if you wish to check that the JWS object contains the expected payload.
 """
 
@@ -24,14 +23,18 @@ def validate_signature(jws_string, key):
     jws_token = jws.JWS()
     try:
         jws_token.deserialize(raw_jws=jws_string, key=key)
-    except jws.InvalidJWSSignature:
+    except jws.InvalidJWSSignature as e:
         print(
             "Signature validation failed. "
-            "Check that the signing certificate provided matches the key used to sign the JWS"
+            "Check that the signing certificate provided matches the key used to sign the JWS\n\n{e}"
         )
         sys.exit(1)
     except jws.InvalidJWSObject as e:
         print(e)
+        sys.exit(1)
+
+    if jws_string.count(".") != 2:
+        print("JWS not in compact form")
         sys.exit(1)
 
     print("Successfully validated signature")
@@ -57,7 +60,7 @@ def check_headers(jws_token, cert_path):
         header_errors["x5t#S256"] = f"Expected '{expected_sha256}', was '{sha2_header}'"
 
     if header_errors:
-        print("Header errors")
+        print("Header errors:")
         for (header, err) in header_errors.items():
             print(f"  {header} - {err}")
         sys.exit(1)
@@ -84,6 +87,8 @@ def check_jws(cert_path, user_jws, expected_payload=None):
     check_headers(jws_token, cert_path)
 
     check_payload(jws_token.payload.decode("utf-8"), expected_payload)
+
+    return jws_token.payload.decode("utf-8")
 
 
 def main():

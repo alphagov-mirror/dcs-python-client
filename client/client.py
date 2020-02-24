@@ -66,7 +66,7 @@ def sign(message, signing_key, sha1_thumbprint, sha256_thumbprint):
 
 def encrypt(message, encryption_certificate):
     """Encrypt a message for DCS"""
-    protected_header = {"alg": "RSA-OAEP-256", "enc": "A128CBC-HS256", "typ": "JWE"}
+    protected_header = {"alg": "RSA-OAEP", "enc": "A128CBC-HS256", "typ": "JWE"}
     jwetoken = jwe.JWE(
         plaintext=message, recipient=encryption_certificate, protected=protected_header
     )
