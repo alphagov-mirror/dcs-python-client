@@ -2,7 +2,7 @@
 """
 Check you are signing and encrypting correctly for the Document Checking Service (DCS)
 
-Usage: check_jose --client-signing-certificate <PATH> --sha1-thumbprint <SHA1> --sha256-thumbprint <SHA256>
+Usage: check_thumbprint --client-signing-certificate <PATH> --sha1-thumbprint <SHA1> --sha256-thumbprint <SHA256>
 
 Options:
     -h --help                               Show this screen.
