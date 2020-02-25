@@ -6,7 +6,7 @@ Usage: check_jose --server-encryption-key <PATH> --server-encryption-certificate
 
 Options:
     -h --help                               Show this screen.
-    --jose <JOSE>                           The string that is output by your encryption implementation
+    --jose <JOSE>                           The string that is output by your signing implementation
     --server-encryption-key <PATH>          The path to the key the DCS will use to decrypt your requests
     --server-encryption-certificate <PATH>  The path to the certificate used to encrypt your requests
     --client-signing-certificate <PATH>     The path to the certificate you used to sign the JWS

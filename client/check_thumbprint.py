@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Check you are signing and encrypting correctly for the Document Checking Service (DCS)
+Check your certificate thumbprints are formed correctly for the Document Checking Service (DCS)
 
-Usage: check_thumbprint --client-signing-certificate <PATH> --sha1-thumbprint <SHA1> --sha256-thumbprint <SHA256>
+Usage: check_thumbprint --certificate <PATH> --sha1-thumbprint <SHA1> --sha256-thumbprint <SHA256>
 
 Options:
     -h --help                               Show this screen.
-    --client-signing-certificate <PATH>
+    --certificate <PATH>
     --sha1-thumbprint <SHA1>
     --sha256-thumbprint <SHA256>
 """
