@@ -7,7 +7,7 @@ Usage: check_signing --client-signing-certificate <PATH> --jws <JWS> [--payload 
 Options:
     -h --help                               Show this screen.
     --jws <JWS>                             The string that is output by your signing implementation
-    --client-signing-certificate <PATH>     The path to the certificate you used to sign the JWS
+    --client-signing-certificate <PATH>     The path to the certificate that is the counterpart to the key you used to sign the JWS
     --payload                               The expected payload of the JWS object. Provide this if you wish to check that the JWS object contains the expected payload.
 """
 
