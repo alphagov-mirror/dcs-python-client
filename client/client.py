@@ -64,9 +64,16 @@ def sign(message, signing_key, sha1_thumbprint, sha256_thumbprint):
     return jwstoken.serialize(compact=True)
 
 
-def encrypt(message, encryption_certificate):
+def encrypt(message, encryption_certificate, sha1_thumbprint, sha256_thumbprint):
     """Encrypt a message for DCS"""
-    protected_header = {"alg": "RSA-OAEP", "enc": "A128CBC-HS256", "typ": "JWE"}
+
+    protected_header = {
+        "alg": "RSA-OAEP",
+        "enc": "A128CBC-HS256",
+        "typ": "JWE",
+        "x5t": sha1_thumbprint,
+        "x5t#S256": sha256_thumbprint,
+    }
     jwetoken = jwe.JWE(
         plaintext=message, recipient=encryption_certificate, protected=protected_header
     )
@@ -135,6 +142,9 @@ def wrap_request_payload(unwrapped_payload, arguments):
     client_sha1_thumbprint, client_sha256_thumbprint = generate_thumbprints(
         arguments["--client-signing-certificate"]
     )
+    server_sha1_thumbprint, server_sha256_thumbprint = generate_thumbprints(
+        arguments["--server-encryption-certificate"]
+    )
 
     inner_signed = sign(
         json_encode(unwrapped_payload),
@@ -142,7 +152,12 @@ def wrap_request_payload(unwrapped_payload, arguments):
         client_sha1_thumbprint,
         client_sha256_thumbprint,
     )
-    encrypted = encrypt(inner_signed, server_encryption_certificate)
+    encrypted = encrypt(
+        inner_signed,
+        server_encryption_certificate,
+        server_sha1_thumbprint,
+        server_sha256_thumbprint,
+    )
     return sign(
         encrypted, client_signing_key, client_sha1_thumbprint, client_sha256_thumbprint
     )
