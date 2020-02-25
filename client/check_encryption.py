@@ -2,18 +2,20 @@
 """
 Check you are encrypting correctly for the Document Checking Service (DCS)
 
-Usage: check_encryption --server-encryption-key <PATH> --jwe <JWE> [--payload <PAYLOAD>]
+Usage: check_encryption --server-encryption-key <PATH> --server-encryption-certificate <PATH> --jwe <JWE> [--payload <PAYLOAD>]
 
 Options:
     -h --help                               Show this screen.
     --jwe <JWE>                             The string that is output by your encryption implementation
     --server-encryption-key <PATH>          The path to the key the DCS will use to decrypt your requests
+    --server-encryption-certificate <PATH>  The path to the certificate used to encrypt your requests
     --payload                               The expected payload of the JWS object. Provide this if you wish to check that the JWE contains the expected payload.
 """
 
 from docopt import docopt
 from jwcrypto import jwe
 import sys
+from check_thumbprint import generate_thumbprints
 
 from client import load_pem
 
@@ -38,7 +40,7 @@ def decrypt(encrypted_jwe, key):
     return jwe_token
 
 
-def check_headers(jwe_token):
+def check_headers(jwe_token, cert_path):
     headers = jwe_token.jose_header
     header_errors = {}
 
@@ -48,6 +50,16 @@ def check_headers(jwe_token):
 
     if headers["enc"] != "A128CBC-HS256":
         header_errors["enc"] = f"Expected 'A128CBC-HS256', was '{alg_header}'"
+
+    expected_sha1, expected_sha256 = generate_thumbprints(cert_path)
+
+    sha1_header = headers.get("x5t", "absent")
+    if sha1_header != expected_sha1:
+        header_errors["x5t"] = f"Expected '{expected_sha1}', was '{sha1_header}'"
+
+    sha2_header = headers.get("x5t#S256", "absent")
+    if sha2_header != expected_sha256:
+        header_errors["x5t#S256"] = f"Expected '{expected_sha256}', was '{sha2_header}'"
 
     if header_errors:
         print("Header errors:")
@@ -71,10 +83,10 @@ def check_payload(actual_payload, expected_payload=None):
         print(f"Payload: '{actual_payload}'")
 
 
-def check_jwe(cert_path, encrypted_jwe, expected_payload=None):
-    jwe_token = decrypt(encrypted_jwe, load_pem(cert_path))
+def check_jwe(key_path, cert_path, encrypted_jwe, expected_payload=None):
+    jwe_token = decrypt(encrypted_jwe, load_pem(key_path))
 
-    check_headers(jwe_token)
+    check_headers(jwe_token, cert_path)
 
     check_payload(jwe_token.payload.decode("utf-8"), expected_payload)
 
@@ -87,6 +99,7 @@ def main():
 
     check_jwe(
         arguments["--server-encryption-key"],
+        arguments["--server-encryption-certificate"],
         arguments["--jwe"],
         arguments["<PAYLOAD>"],
     )
