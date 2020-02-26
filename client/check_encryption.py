@@ -45,8 +45,8 @@ def check_headers(jwe_token, cert_path):
     header_errors = {}
 
     alg_header = headers.get("alg")
-    if alg_header != "RSA-OAEP":
-        header_errors["alg"] = f"Expected 'RSA-OAEP', was '{alg_header}'"
+    if alg_header not in ["RSA-OAEP", "RSA-OAEP-256"]:
+        header_errors["alg"] = f"Expected 'RSA-OAEP' or 'RSA-OAEP-256', was '{alg_header}'"
 
     if headers["enc"] != "A128CBC-HS256":
         header_errors["enc"] = f"Expected 'A128CBC-HS256', was '{alg_header}'"
